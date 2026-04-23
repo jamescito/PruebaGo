@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: tasks_db
+    restart: always
+    environment:
+      POSTGRES_USER: user_tasks
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: tasks_management
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
