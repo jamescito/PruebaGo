@@ -4,8 +4,8 @@ services:
     container_name: tasks_db
     restart: always
     environment:
-      POSTGRES_USER: user_tasks
-      POSTGRES_PASSWORD: password123
+      POSTGRES_USER: James_task
+      POSTGRES_PASSWORD: james2408
       POSTGRES_DB: tasks_management
     ports:
       - "5432:5432"

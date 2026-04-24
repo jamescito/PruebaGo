@@ -1,8 +1,12 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 
-public class DbContext
+
+
+public class DbContext:Microsoft.EntityFrameworkCore.DbContext
 {
-	public DbContext()
-	{
+	public DbContext(DbContextOptions <DbContext> options: base(options))
+    {
+
 	}
 }
