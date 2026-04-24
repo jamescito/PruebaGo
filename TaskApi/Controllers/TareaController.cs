@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskApi.Data;
 using TaskApi.Models;
 using Microsoft.EntityFrameworkCore;
+using TaskApi.DTOs;
 
 namespace TaskApi.Controllers;
 
@@ -19,35 +20,74 @@ public class TareaController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<IEnumerable<Tarea>>> GetTareas()
+	public async Task<ActionResult<IEnumerable<TareaResponseDto>>> GetTareas()
 	{
-		return await _context.Tareas.ToListAsync();
-	}
+		var tareas = await _context.Tareas.ToListAsync();
+
+        return tareas.Select(t => new TareaResponseDto
+		{
+			Id = t.Id,
+			Title = t.Title,
+			Description = t.Description,
+			IsCompleted = t.IsCompleted,
+			Duedate = t.Duedate
+		}).ToList();
+    }
 
 	[HttpPost]
-	public async Task<ActionResult<Tarea>> PostTarea(Tarea tarea)
+	public async Task<ActionResult<TareaResponseDto>> PostTarea(TareaCreateDto tareaDto)
 	{
-		_context.Tareas.Add(tarea);
+		var tarea = new Tarea
+		{
+			Title = tareaDto.Title,
+			Description = tareaDto.Description,
+			IsCompleted = tareaDto.IsCompleted,
+			Duedate = tareaDto.Duedate
+		};
+
+        _context.Tareas.Add(tarea);
 		await _context.SaveChangesAsync();
 
-		return CreatedAtAction(nameof(GetTarea), new { id = tarea.Id }, tarea);
+		var tareaResponse = new TareaResponseDto
+		{
+			Id = tarea.Id,
+			Title = tarea.Title,
+			Description = tarea.Description,
+			IsCompleted = tarea.IsCompleted,
+			Duedate = tarea.Duedate
+		};
+
+
+        return CreatedAtAction(nameof(GetTarea), new { id = response.Id }, response);
 	}
 
 	[HttpGet("{id}")]
-	public async Task<ActionResult<Tarea>> GetTarea(int id)
+	public async Task<ActionResult<TareaResponseDto>> GetTarea(int id)
 	{
 		var tarea = await _context.Tareas.FindAsync(id);
 		if (tarea == null) return NotFound();
-		return tarea;
-	}
+		return new TareaResponseDto
+		{
+			Id = tarea.Id,
+			Title = tarea.Title,
+			Description = tarea.Description,
+			IsCompleted = tarea.IsCompleted,
+			Duedate = tarea.Duedate
+		};
+    }
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> PutTarea(int id, Tarea tarea)
+	public async Task<IActionResult> PutTarea(int id, TareaCreateDto tareaDto)
 	{
-		if (id != tarea.Id) return BadRequest();
-		_context.Entry(tarea).State = EntityState.Modified;
+		var tarea = await _context.Tareas.FindAsync(id);
+        if (tarea == null) return NotFound();
 
-		try
+		tarea.Title = tareaDto.Title;
+		tarea.Description = tareaDto.Description;
+		tarea.IsCompleted = tareaDto.IsCompleted;
+		tarea.Duedate = tareaDto.Duedate;
+
+        try
 		{
 			await _context.SaveChangesAsync();
 		}
