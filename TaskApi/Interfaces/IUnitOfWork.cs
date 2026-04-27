@@ -9,6 +9,6 @@ namespace TaskApi.Interfaces;
 
 public interface IUnitOfWork: IDisposable
 {
-	ITarearepository Tareas { get; }
+	ITareaRepository Tareas { get; }
 	Task<int> CompleteAsync();
 }

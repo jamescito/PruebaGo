@@ -1,12 +1,13 @@
 ﻿using System;
+using TaskApi.Models;
 
 namespace TaskApi.Interfaces;
 
-public interface ITarearepository
+public interface ITareaRepository
 {
-		Task<IEnumerable<Tarea>> GetAllsAsync();
-		Task<Tarea> GetByIdAsync(int id);
-		Task Addasync(Tarea tarea);
-		Task UpdateAsync(Tarea tarea);
-		Task DeleteAsync(int id);
+		Task<IEnumerable<Tarea>> GetAllAsync();
+		Task<Tarea?> GetByIdAsync(int id);
+		Task AddAsync(Tarea tarea);
+		void Update(Tarea tarea);
+		void Delete(Tarea tarea);
 }
