@@ -1,0 +1,35 @@
+<h2>Gestión de Tareas</h2>
+<input type="text" [(ngModel)]="filtro" placeholder="Buscar..." style="width: 100%; padding: 8px; margin-bottom: 10px;">
+
+<div style="background: #f4f4f4; padding: 15px; margin-bottom: 20px;">
+  <form (ngSubmit)="agregarOActualizar()">
+    <input type="text" [(ngModel)]="nuevaTarea.Title" name="Title" placeholder="Título" required>
+    <input type="text" [(ngModel)]="nuevaTarea.Description" name="Description" placeholder="Descripción">
+    <label><input type="checkbox" [(ngModel)]="nuevaTarea.IsCompleted" name="IsCompleted"> ¿Hecho?</label>
+    <input type="date" [(ngModel)]="nuevaTarea.Duedate" name="Duedate">
+    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+    <button type="button" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+  </form>
+</div>
+
+<table border="1" style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr><th>Título</th><th>Descripción</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of tareasFiltradas">
+      <td>{{ t.Title }}</td>
+      <td>{{ t.Description }}</td>
+      <td style="text-align: center;">
+        <span [style.color]="t.IsCompleted ? 'green' : 'red'">
+          {{ t.IsCompleted ? 'Activo' : 'Inactivo' }}
+        </span>
+      </td>
+      <td>{{ t.Duedate | date:'dd/MM/yyyy' }}</td>
+      <td>
+        <button (click)="editar(t)">Editar</button>
+        <button (click)="eliminar(t.id)" style="color: red;">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
