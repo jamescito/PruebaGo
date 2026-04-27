@@ -32,7 +32,7 @@ public class TareaController : ControllerBase
 		//var tareas = await _context.Tareas.ToListAsync();
 		var tareas = await _unitOfWork.Tareas.GetAllAsync();
 
-        return tareas.Select(t => new TareaResponseDto
+      var response = tareas.Select(t => new TareaResponseDto
 		{
 			Id = t.Id,
 			Title = t.Title,
@@ -40,6 +40,7 @@ public class TareaController : ControllerBase
 			IsCompleted = t.IsCompleted,
 			Duedate = t.Duedate
 		}).ToList();
+		return Ok(response);
     }
 
 	[HttpPost]

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskApi.Interfaces;
 using TaskApi.Models;
-using Microsoft.EntityFrameworkCore;
 using TaskApi.Data;
 
 namespace TaskApi.Repositories;
@@ -21,7 +20,7 @@ public class TareaRepository : ITareaRepository
 	{
 		return await _context.Tareas.ToListAsync();
 	}
-	public async Task<Tarea> GetByIdAsync(int id)
+	public async Task<Tarea?> GetByIdAsync(int id)
 	{
 		return await _context.Tareas.FindAsync(id);
 	}
