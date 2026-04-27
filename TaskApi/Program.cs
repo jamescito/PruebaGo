@@ -4,8 +4,11 @@ using Scalar.AspNetCore;
 using TaskApi.Interfaces;
 using TaskApi.Repositories;
 
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
+<<<<<<< Updated upstream
 
 builder.Services.AddCors(options =>
 {
@@ -14,6 +17,16 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
               .AllowAnyMethod();
+=======
+// --- 1. Configuración de CORS ---
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PruebaGoPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+>>>>>>> Stashed changes
     });
 });
 
@@ -26,7 +39,11 @@ builder.Services.AddDbContext<DbPrueba>(options =>
 
 var app = builder.Build();
 
+<<<<<<< Updated upstream
 app.UseCors("AllowAngular");
+=======
+// --- 2. Middlewares (El orden es vital) ---
+>>>>>>> Stashed changes
 
 if (app.Environment.IsDevelopment())
 {
@@ -34,7 +51,14 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
+// Activar CORS antes de los controladores
+app.UseCors("PruebaGoPolicy");
+
+// Si tienes problemas de conexión, mantén esta línea comentada en desarrollo:
+// app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();

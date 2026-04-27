@@ -9,5 +9,9 @@ public class TareaCreateDto
 		public string Description { get; set; } = string.Empty;
 		public bool IsCompleted { get; set; }
 		public DateTime? Duedate { get; set; }
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
 }
